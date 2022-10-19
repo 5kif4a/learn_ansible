@@ -1,0 +1,17 @@
+---
+- name: "Add docker group"
+  hosts: "webserver"
+
+  tasks:
+    - name: "Add docker group"
+      become: true
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Create user "cicd-runner" & add to group "docker"
+      become: true
+      ansible.builtin.user:
+        name: cicd-runner
+        groups: docker
+        append: yes

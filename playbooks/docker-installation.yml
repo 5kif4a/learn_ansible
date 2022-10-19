@@ -1,0 +1,19 @@
+---
+- name: Docker Installation
+  hosts: webserver
+
+  tasks:
+    - name: Add docker repo
+      become: true
+      ansible.builtin.yum_repository:
+        name: docker
+        description: Docker CE Stable
+        baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+        enabled: 1
+        gpgcheck: 1
+        gpgkey: https://download.docker.com/linux/centos/gpg
+
+    - name: Install docker ce
+      become: true
+      ansible.builtin.yum:
+        name: docker-ce
