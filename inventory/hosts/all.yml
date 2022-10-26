@@ -10,4 +10,4 @@ local:
 
 webserver:
   hosts:
-    webserver:
+    halyk_devops_server:

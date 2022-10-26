@@ -1,0 +1,14 @@
+---
+- name: "Install nginx"
+  ansible.builtin.include_role:
+    name: nginx
+
+- name: Replace default nginx html page
+  ansible.builtin.include_role:
+    name: nginx_config
+  vars:
+    nginx_config_html_demo_template_enable: true
+    nginx_config_html_demo_template:
+      - template_file: index.html.j2
+        deployment_location: /usr/share/nginx/html/index.html
+        web_server_name: Ansible NGINX collection

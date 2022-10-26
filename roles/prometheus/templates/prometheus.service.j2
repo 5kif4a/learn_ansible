@@ -1,0 +1,10 @@
+[Unit]
+Description=Prometheus
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecReload=/bin/kill -HUP \$MAINPID
+ExecStart={{ prometheus_directory_dest }}/{{ prometheus_unpacked_directory }}/prometheus --config.file=/etc/prometheus.yml
+[Install]
+WantedBy=default.target

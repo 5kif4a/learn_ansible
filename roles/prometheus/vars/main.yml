@@ -1,0 +1,5 @@
+---
+# vars file for prometheus
+prometheus_archive_url: "https://github.com/prometheus/prometheus/releases/download/v2.39.1/prometheus-2.39.1.linux-amd64.tar.gz"
+prometheus_unpacked_directory: "prometheus-2.39.1.linux-amd64"
+prometheus_directory_dest: "/usr/local/prometheus"

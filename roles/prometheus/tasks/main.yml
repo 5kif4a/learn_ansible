@@ -1,0 +1,55 @@
+---
+# tasks file for prometheus
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ prometheus_directory_dest }}"
+    state: directory
+    mode: "0755"
+
+- name: Create group
+  ansible.builtin.group:
+    name: prometheus
+    state: present
+
+- name: Create user & add to group
+  ansible.builtin.user:
+    name: prometheus
+    groups: prometheus
+    append: yes
+
+- name: Install Prometheus
+  ansible.builtin.unarchive:
+    src: "{{ prometheus_archive_url }}"
+    dest: "{{ prometheus_directory_dest }}"
+    remote_src: true
+
+- name: Move Prometheus config file
+  command: "mv {{ prometheus_directory_dest }}/{{ prometheus_unpacked_directory }}/prometheus.yml /etc/prometheus.yml"
+
+- name: Create Prometheus service
+  ansible.builtin.template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: prometheus
+    group: prometheus
+    mode: "0644"
+
+- name: Enable service
+  ansible.builtin.service:
+    name: prometheus
+    enabled: yes
+
+- name: Just force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Start service, if not started
+  ansible.builtin.service:
+    name: prometheus
+    state: started
+
+- name: Restart service, in all cases
+  ansible.builtin.service:
+    name: prometheus
+    state: restarted
